@@ -6,7 +6,9 @@
 
 ;Esc::ExitApp  ; Exit script with Escape key
 
-Home::
+SetTitleMatchMode, 2
+
+	F1::
 	SetAutoHealDefaults()
 	AutoHealToggle()
 	return
@@ -22,39 +24,24 @@ AutoHealToggle() {
 
 
 AutoHealLoop:
-	lifeHeal()
-	manaHeal()
-	Sleep, 1000
+	heal(lifeCoordinates.x, lifeCoordinates.y, lifeCoordinates.color, 3 )
+	heal(manaCoordinates.x, manaCoordinates.y, manaCoordinates.color, 2 )	
+	Sleep, 100
 	return
 
 SetAutoHealDefaults(){
 	global
-	grayManaColor = 0x696969
-	manaColorX = 667
-	manaColorY = 99
-	
-	grayLifeColor = 0x696969
-	lifeColorY = 70
-	lifeColorX = 795
-
+	manaCoordinates := {x:667,	y:99,	color:"0x696969"}
+	lifeCoordinates := {x:795,	y:70,	color:"0x696969"}
 }
 
-lifeHeal(){
-	global
-	PixelGetColor, color, %lifeColorX%, %lifeColorY%
-	;Msgbox %color%, %lifeColorX%, %lifeColorY%
-	if(color = grayLifeColor){
+heal(xCoordinate, yCoordinate, colorToCheck, command){
+	PixelGetColor, color, % xCoordinate , % yCoordinate 
+	Msgbox %xCoordinate%, %yCoordinate%, %colorToCheck%, %command%
+	if(color <> colorToCheck){
 		;Msgbox Usar pot!
-		Send, {3}
-	}
-}	
-	
-manaHeal(){
-	global
-	PixelGetColor, color, %manaColorX%, %manaColorY%
-	;Msgbox %color%, %manaColorX%, %manaColorY%
-	if(color = grayManaColor){
-		;Msgbox Usar pot!
-		Send, {2}
+		ControlSend,, {%command%}, Nox
+
 	}
 }
+
