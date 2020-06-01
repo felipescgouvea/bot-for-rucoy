@@ -4,9 +4,6 @@
 ;	Press Right mouse button to activate mage spell
 ;
 
-; Esc::ExitApp  ; Exit script with Escape key
-
-
 RButton::
 	fastDistanceSpell(true)
 	return
@@ -26,17 +23,13 @@ fastMagicSpell(){
 }
 
 fastDistanceSpell(withChange){
-	PixelGetColor, color, 410, 100
-	if( color = 0x696969){
-		Send, {2}
-	}
 	if(withChange){
-		Send {F2}
+		ControlSend,, {F2}, Nox
 	}
-	Send, {1}
+	ControlSend,, {1}, Nox
 	Sleep, 90
 	if(withChange){
-		Send {F1}
+		ControlSend,, {F1}, Nox
 	}
 	return
 }

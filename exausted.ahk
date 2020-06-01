@@ -48,7 +48,7 @@ checkExausted(){
 		Send {7}
 		changeWeapon()
 		Sleep, 1000
-		MageSpellHimself(1260,540)
+		;MageSpellHimself(1260,540)
 		Sleep, 1000
 		changeWeapon()
 		Send {5}
@@ -73,10 +73,5 @@ changeWeapon(){
 	MouseClick, left,  mageWeaponChangeX,  mageWeaponChangeY
 	sleep, 250
 	MouseClick, left,  mageWeaponChangeX2,  mageWeaponChangeY2
-	if(tipoDaArma = "low"){
-			tipoDaArma = "high"
-	}
-	else{
-			tipoDaArma = "low"
-	}
+
 }
