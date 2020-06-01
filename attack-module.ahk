@@ -3,7 +3,7 @@
 ;	Attack Module
 ;
 ;
-#include screen-config.ahk
+
 setAttackModuleDefaults()
 
 setAttackModuleDefaults(){
@@ -41,12 +41,28 @@ isAttackingAnyMonster(){
 checkSurroundingMonster(monsterConfig){
 	result := {}
 	numberOfSurroundingMonsters := 0
-	numberOfSurroundingMonsters := numberOfSurroundingMonsters + isIdenticalColor(monsterConfig.left.x, monsterConfig.left.y, monsterConfig.color)
-	numberOfSurroundingMonsters := numberOfSurroundingMonsters + isIdenticalColor(monsterConfig.right.x, monsterConfig.right.y, monsterConfig.color)
-	numberOfSurroundingMonsters := numberOfSurroundingMonsters + isIdenticalColor(monsterConfig.up.x, monsterConfig.up.y, monsterConfig.color)
-	numberOfSurroundingMonsters := numberOfSurroundingMonsters + isIdenticalColor(monsterConfig.down.x, monsterConfig.down.y, monsterConfig.color)
+	leftMonster :=  isIdenticalColor(monsterConfig.left.x, monsterConfig.left.y, monsterConfig.color)
+	if(leftMonster){
+		result.coordinates := monsterConfig.left
+		numberOfSurroundingMonsters++
+	}
+	rightMonster :=  isIdenticalColor(monsterConfig.right.x, monsterConfig.right.y, monsterConfig.color)
+	if(rightMonster){
+		result.coordinates := monsterConfig.right
+		numberOfSurroundingMonsters++
+	}
+	upMonster :=  isIdenticalColor(monsterConfig.up.x, monsterConfig.up.y, monsterConfig.color)
+	if(upMonster){
+		result.coordinates := monsterConfig.up
+		numberOfSurroundingMonsters++
+	}
+	downMonster :=  isIdenticalColor(monsterConfig.down.x, monsterConfig.down.y, monsterConfig.color)
+	if(downMonster){
+		result.coordinates := monsterConfig.down
+		numberOfSurroundingMonsters++
+	}
 	result.monsterQuantity := numberOfSurroundingMonsters
-	return numberOfSurroundingMonsters
+	return result
 }
 
 checkSurroundingDjinn(){
@@ -81,29 +97,17 @@ checkSurroundingSkeleton(){
 	
 decideWhereToAttackDistance(){
 	result := checkSurroundingVamp()
-	if(direction = "NONE"){
-		;walkAround()
+
+	if(result.monsterQuantity > 1){
+		if(!isAttackingAnyMonster()){
+			MouseClick, left, result.coordinates.x, result.coordinates.y
+		}	
+
+		fastDistanceSpell(false)
+		
 	}
 	else{
-		Tooltip %numberOfSurroundingMonsters%
-		if(numberOfSurroundingMonsters > 1){
-			;fastDistanceSpell(false)
-		}
+		walkAround()
 	}
 }
 
-decideWhereToAttackMagic(){
-	global
-	direction := checkSurroundingVamp()
-	Tooltip %numberOfSurroundingMonsters%
-	if(direction = "NONE" || numberOfSurroundingMonsters < 2){
-			;walkAround()
-	}
-	else{
-			;Msgbox %direction%
-			;XCoordinateToSpell := getRelatedCoordinatesX(direction)
-			;YCoordinateToSpell := getRelatedCoordinatesY(direction)
-			;Msgbox %XCoordinateToSpell%, %YCoordinateToSpell%
-			;MageSpellHimself(XCoordinateToSpell, YCoordinateToSpell)
-	}
-}

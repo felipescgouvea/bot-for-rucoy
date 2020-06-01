@@ -3,20 +3,10 @@
 ;	Random Walk Module
 ;
 ;
-#include magic-fast-spell.ahk
 
 
 setRandomWalkDefaults(){
 	global
-	bluePositionOnMapX := 1250
-	bluePositionOnMapY := 540
-	
-	mapIconX := 1740
-	mapIconY := 105
-	
-	returnIconX := 2070
-	returnIconY := 100
-	
 	greenWayColor := 0x4ABA1E
 	
 	bluePositionSize := 17
@@ -24,9 +14,11 @@ setRandomWalkDefaults(){
 
 walkAround(){
 	global
-	;Msgbox RANDOM X E Y %randomX%, %randomY%, %mapIconX%, %returnIconX%
-	Sleep, 500
-	MouseClick, left,  mapIconX,  mapIconY
+	greenpath := context.GreenPath
+	mapIcon := context.MapIcon
+	returnIcon := context.ReturnIcon
+
+	MouseClick, left,  mapIcon.x,  mapIcon.y
 	Sleep, 250
 	leftPath := 0xFFFFFF
 	rightPath := 0xFFFFFF
@@ -38,28 +30,29 @@ walkAround(){
 		randomY := calculateRandomCoordinatesAroundBlueSquareY()
 		MouseClick, left,  randomX,  randomY
 		Sleep, 100
-		PixelGetColor, leftPath, 1240, 534
-		PixelGetColor, rightPath, 1276, 534
-		PixelGetColor, upPath, 1255, 516
-		PixelGetColor, downPath, 1255, 558
+		PixelGetColor, leftPath, greenpath.left.x, greenpath.left.y
+		PixelGetColor, rightPath, greenpath.right.x, greenpath.right.y
+		PixelGetColor, upPath, greenpath.up.x, greenpath.up.y
+		PixelGetColor, downPath, greenpath.down.x, greenpath.down.y
 		counter++
 		;Msgbox %leftPath%, %rightPath%, %upPath%, %downPath%
 	}
 	Sleep, 250
-	MouseClick, left,  returnIconX,  returnIconY
+	MouseClick, left,  returnIcon.x,  returnIcon.y
 	Sleep, 5000
 
 }
 
 calculateRandomCoordinatesAroundBlueSquareX(){
 	global
+	blueCoordinatesX := context.BlueSquareOnMap.x
 	Random, rand, 5, 13
 	randomX := rand * bluePositionSize
 	if(Mod(rand, 2) > 0){
-		finalClickPosition :=  bluePositionOnMapX + randomX
+		finalClickPosition :=  blueCoordinatesX + randomX
 	}
 	else{
-		finalClickPosition :=  bluePositionOnMapX - randomX
+		finalClickPosition :=  blueCoordinatesX - randomX
 	}
 
 	return finalClickPosition
@@ -67,14 +60,15 @@ calculateRandomCoordinatesAroundBlueSquareX(){
 
 calculateRandomCoordinatesAroundBlueSquareY(){
 	global
+	blueCoordinatesY := context.BlueSquareOnMap.y
 	Random, rand, 5, 13
 	randomY := rand * bluePositionSize
 
 	if(Mod(rand, 2) > 0){
-		finalClickPosition :=  bluePositionOnMapY + randomY
+		finalClickPosition :=  blueCoordinatesY + randomY
 	}
 	else{
-		finalClickPosition :=  bluePositionOnMapY - randomY
+		finalClickPosition :=  blueCoordinatesY - randomY
 	}
 	;Msgbox %bluePositionSize%, %bluePositionOnMapY%
 	return finalClickPosition
