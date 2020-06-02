@@ -54,14 +54,15 @@ Loop:
 	heal(lifeCoordinates.x, lifeCoordinates.y, lifeCoordinates.color, 3 )
 	heal(manaCoordinates.x, manaCoordinates.y, manaCoordinates.color, 2 )	
 	runAutoAttack()
+	loot()
 	;checkExausted()
 	;unlock()
 	return
 
 runAutoAttack(){
 	global
-	decideWhereToAttackDistance()
-	Sleep, 1100
+	decideWhereToAttackDistance("STAND")
+	Sleep, 1230
 }
 
 

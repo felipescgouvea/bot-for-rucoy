@@ -24,17 +24,14 @@ isIdenticalColor(X,  Y,  inputColor) {
 	}	
 }
 
-isAttackingAnyMonster(){ 
-	global
-		isAttackingLeft := isIdenticalColor(context.AttackingMonsterConfig.left.x, context.AttackingMonsterConfig.left.y, context.AttackingMonsterConfig.color)
-		isAttackingRight := isIdenticalColor(context.AttackingMonsterConfig.right.x, context.AttackingMonsterConfig.right.y, context.AttackingMonsterConfig.color)
-		isAttackingUp := isIdenticalColor(context.AttackingMonsterConfig.up.x, context.AttackingMonsterConfig.up.y, context.AttackingMonsterConfig.color)
-		isAttackingDown := isIdenticalColor(context.AttackingMonsterConfig.down.x, context.AttackingMonsterConfig.down.y, context.AttackingMonsterConfig.color)
+isAttackingAnyMonster(attackingMonsterConfig){ 
+		isAttackingLeft := isIdenticalColor(attackingMonsterConfig.left.x, attackingMonsterConfig.left.y, attackingMonsterConfig.color)
+		isAttackingRight := isIdenticalColor(attackingMonsterConfig.right.x, attackingMonsterConfig.right.y, attackingMonsterConfig.color)
+		isAttackingUp := isIdenticalColor(attackingMonsterConfig.up.x, attackingMonsterConfig.up.y, attackingMonsterConfig.color)
+		isAttackingDown := isIdenticalColor(attackingMonsterConfig.down.x, attackingMonsterConfig.down.y, attackingMonsterConfig.color)
 
-		result := (isAttacking || isAttackingRight || isAttackingUp || isAttackingDown)
-
-		
-		return result
+		isAttacking := (isAttackingLeft || isAttackingRight || isAttackingUp || isAttackingDown)
+		return isAttacking
 }
 
 
@@ -76,6 +73,7 @@ checkSurroundingGargoyle(){
 }
 
 checkSurroundingDrowFighter(){
+	global
 	return checkSurroundingMonster(context.DrowFighter)
 }	
 
@@ -93,14 +91,29 @@ checkSurroundingSkeleton(){
 	global
 	return checkSurroundingMonster(context.Skeleton)
 }	
-
 	
-decideWhereToAttackDistance(){
-	result := checkSurroundingVamp()
+decideWhereToAttackDistance(AttackType){
+	global
+	if(AttackType = "SKILLING"){
+		skillingHunt()
+	}
+	else{
+		if(AttackType = "STAND"){
+			gargoyleStandAttack()
+		}
+	}
+}
 
-	if(result.monsterQuantity > 1){
-		if(!isAttackingAnyMonster()){
-			MouseClick, left, result.coordinates.x, result.coordinates.y
+skillingHunt(){
+	global
+	surroundingMonsterResult := checkSurroundingGargoyle()
+	centerCoordinates := context.AbsoluteCenter
+	if(surroundingMonsterResult.monsterQuantity > 0){
+		isAttacking := isAttackingAnyMonster(context.AttackingMonsterConfig)
+		if(!isAttacking){
+			;Msgbox % surroundingSkeletonResult.coordinates.x "," surroundingSkeletonResult.coordinates.y
+			MouseClick, left, surroundingMonsterResult.coordinates.x, surroundingMonsterResult.coordinates.y
+			MouseMove, centerCoordinates.x, centerCoordinates.y
 		}	
 
 		fastDistanceSpell(false)
@@ -111,3 +124,19 @@ decideWhereToAttackDistance(){
 	}
 }
 
+gargoyleStandAttack(){
+	global
+	surroundingMonsterResult := checkSurroundingGargoyle()
+		if(surroundingMonsterResult.monsterQuantity > 0){
+		isAttacking := isAttackingAnyMonster(context.AttackingMonsterConfig)
+		if(!isAttacking){
+			;Msgbox % surroundingSkeletonResult.coordinates.x "," surroundingSkeletonResult.coordinates.y
+			MouseClick, left, surroundingMonsterResult.coordinates.x, surroundingMonsterResult.coordinates.y
+			MouseMove, centerCoordinates.x, centerCoordinates.y
+		}	
+		
+	}
+	else{
+		run2timesMaximumTopAndBack()
+	}
+}
