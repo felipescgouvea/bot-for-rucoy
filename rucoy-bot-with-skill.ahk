@@ -31,10 +31,6 @@ Insert::
 
 SetContextDefaults(){
 	global
-	lootPixelX = 2092
-	lootPixelY = 322
-	
-	SetExaustedDefaults()
 	setRandomWalkDefaults()
 	SetAutoHealDefaults()
 	
@@ -55,14 +51,15 @@ Loop:
 	heal(manaCoordinates.x, manaCoordinates.y, manaCoordinates.color, 2 )	
 	runAutoAttack()
 	loot()
-	;checkExausted()
+	checkExausted()
 	;unlock()
 	return
 
 runAutoAttack(){
 	global
-	decideWhereToAttackDistance("STAND")
-	Sleep, 1230
+	;decideWhereToAttackDistance({Monster : "Gargoyle", AttackType : "Skilling", Walktype: "Stand"})
+	decideWhereToAttackDistance({Monster : "Vampire", AttackType : "Skilling", Walktype: "RandomWalk"})
+	Sleep, 1000
 }
 
 

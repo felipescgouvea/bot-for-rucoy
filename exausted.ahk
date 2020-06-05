@@ -6,38 +6,10 @@
 
 
 #include attack-module.ahk
-SetExaustedDefaults()
-
-
-F4::
-	SetExaustedDefaults()
-	checkExausted()
-	return
 
 
 
 
-
-
-SetExaustedDefaults(){
-	global
-	exaustedX := 1407
-	exaustedY := 753	
-	exaustedColor := 0x3D3DFF
-	exaustedTime := -1
-	
-	knightWeaponChangeX := 2072
-	knightWeaponChangeY := 740
-	knightWeaponChangeX2:= 1950
-	knightWeaponChangeY2 := 740	
-	
-	
-	mageWeaponChangeX := 2072
-	mageWeaponChangeY := 988
-	mageWeaponChangeX2:= 1950
-	mageWeaponChangeY2 := 988	
-	
-}
 
 checkExausted(){
 	global
@@ -45,22 +17,21 @@ checkExausted(){
 	 ;Msgbox %exausted%
 	if(isTheCharacterExaustedWithTrainingWeapon()){
 		Tooltip exausted
-		Send {7}
-		changeWeapon()
+		changeWeapon(context.changeToKnightWeaponCommand)
 		Sleep, 1000
-		;MageSpellHimself(1260,540)
+		fastDistanceSpell(false)
 		Sleep, 1000
-		changeWeapon()
-		Send {5}
+		changeWeapon(context.changeToArcherWeaponCommand)
 	}
 }
 
 
 isTheCharacterExaustedWithTrainingWeapon(){
 	global
-	PixelGetColor, groundColor, %exaustedX%, %exaustedY%
+	exaustedCoordinates := context.ExaustedCoordinates
+	PixelGetColor, groundColor, % exaustedCoordinates.x , % exaustedCoordinates.y 
 	;Msgbox %exaustedX%, %exaustedY%, %exaustedColor%, %groundColor%
-	if(groundColor = exaustedColor){
+	if(groundColor = exaustedCoordinates.color){
 			return 1
 	}
 	else{
@@ -68,10 +39,7 @@ isTheCharacterExaustedWithTrainingWeapon(){
 	}
 }
 
-changeWeapon(){
+changeWeapon(command){
 	global
-	MouseClick, left,  mageWeaponChangeX,  mageWeaponChangeY
-	sleep, 250
-	MouseClick, left,  mageWeaponChangeX2,  mageWeaponChangeY2
-
+	ControlSend,, {%command%}, Nox
 }

@@ -92,39 +92,47 @@ checkSurroundingSkeleton(){
 	return checkSurroundingMonster(context.Skeleton)
 }	
 	
-decideWhereToAttackDistance(AttackType){
+decideWhereToAttackDistance(configuration){
 	global
-	if(AttackType = "SKILLING"){
-		skillingHunt()
+	if(configuration.Monster = "Vampire"){
+		VampireSkllingAttack(configuration)
 	}
-	else{
-		if(AttackType = "STAND"){
-			gargoyleStandAttack()
+	if(configuration.Monster = "Gargoyle"){
+			if(configuration.WalkType = "Stand"){
+				gargoyleStandAttack(configuration.AttackType)
+			}
+
 		}
-	}
 }
 
-skillingHunt(){
+
+VampireSkllingAttack(configuration){
 	global
-	surroundingMonsterResult := checkSurroundingGargoyle()
+	surroundingMonsterResult := checkSurroundingVamp()
 	centerCoordinates := context.AbsoluteCenter
-	if(surroundingMonsterResult.monsterQuantity > 0){
+	if(surroundingMonsterResult.monsterQuantity > 1){
 		isAttacking := isAttackingAnyMonster(context.AttackingMonsterConfig)
 		if(!isAttacking){
 			;Msgbox % surroundingSkeletonResult.coordinates.x "," surroundingSkeletonResult.coordinates.y
 			MouseClick, left, surroundingMonsterResult.coordinates.x, surroundingMonsterResult.coordinates.y
 			MouseMove, centerCoordinates.x, centerCoordinates.y
 		}	
-
-		fastDistanceSpell(false)
+		if(configuration.AttackType = "Skilling"){
+			fastDistanceSpell(false)
+		}
 		
 	}
 	else{
-		walkAround()
+		if(configuration.WalkType = "Stand"){
+			;run2timesMaximumTopAndBack()
+		}
+		if(configuration.WalkType = "RandomWalk"){
+			walkAround()
+		}
 	}
 }
 
-gargoyleStandAttack(){
+gargoyleStandAttack(configuration){
 	global
 	surroundingMonsterResult := checkSurroundingGargoyle()
 		if(surroundingMonsterResult.monsterQuantity > 0){
@@ -134,9 +142,17 @@ gargoyleStandAttack(){
 			MouseClick, left, surroundingMonsterResult.coordinates.x, surroundingMonsterResult.coordinates.y
 			MouseMove, centerCoordinates.x, centerCoordinates.y
 		}	
-		
+		if(configuration.AttackType = "Skilling"){
+			fastDistanceSpell(false)
+		}
 	}
 	else{
-		run2timesMaximumTopAndBack()
+		if(configuration.WalkType = "Stand"){
+			run2timesMaximumTopAndBack()
+		}
+		if(configuration.WalkType = "RandomWalk"){
+			walkAround()
+		}
+		
 	}
 }

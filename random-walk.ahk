@@ -83,10 +83,15 @@ run2timesMaximumTopAndBack(){
 	gargoyleGroundColor := context.GargoyleGroundColor
 	gargoyleWallColor := context.GargoyleWallColor
 	oneSquaresBeyond := context.OneSquaresBeyond
+
+	MouseClick, left, fourSquaresBeyond.up.x, fourSquaresBeyond.up.y
+	Sleep, 1500
 	MouseClick, left, fourSquaresBeyond.up.x, fourSquaresBeyond.up.y
 	Sleep, 1500
 	MouseClick, left, fourSquaresBeyond.down.x, fourSquaresBeyond.down.y
-	Sleep, 1500
+	Sleep, 2500
+	MouseClick, left, fourSquaresBeyond.down.x, fourSquaresBeyond.down.y
+	Sleep, 2500
 	while (southColor != gargoyleGround.color){
 		MouseClick, left, oneSquaresBeyond.x, oneSquaresBeyond.y
 		PixelGetColor, southColor, oneSquaresBeyond.x, oneSquaresBeyond.y
@@ -94,11 +99,12 @@ run2timesMaximumTopAndBack(){
 	}
 	PixelGetColor, leftColor, oneSquaresBeyond.left.x, oneSquaresBeyond.left.y
 	PixelGetColor, downColor, oneSquaresBeyond.down.x, oneSquaresBeyond.down.y
-	if(downColor = gargoyleGroundColor){
+	while(downColor = gargoyleGroundColor.color){
+		PixelGetColor, downColor, oneSquaresBeyond.down.x, oneSquaresBeyond.down.y
 		MouseClick, left, oneSquaresBeyond.down.x, oneSquaresBeyond.down.y
+		sleep, 100
 	}
-	if(leftColor <> gargoyleGroundColor){
+	if(leftColor <> gargoyleWallColor.color){
 		MouseClick, left, oneSquaresBeyond.leftDown.x, oneSquaresBeyond.leftDown.y
 	}
-	return
 }
