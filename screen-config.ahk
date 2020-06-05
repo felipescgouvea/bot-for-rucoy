@@ -31,10 +31,10 @@ addCoordinates(name, value){
 		context[name] := value 
 }
 
-addAroundCoordinates(name, leftCoordinates, rightCoordinates, upCoordinates, downCoordinates, leftDown, leftUp, rightDown, rightUp){
+addAroundCoordinates(name, leftCoordinates, rightCoordinates, upCoordinates, downCoordinates, leftDownCoordinates, leftUpCoordinates, rightDownCoordinates, rightUpCoordinates){
 		global
 		;MsgBox, % name
-		context[name] := {left: leftCoordinates, right: rightCoordinates, up: upCoordinates, down: downCoordinates, color: chosenColor}
+		context[name] := {left: leftCoordinates, right: rightCoordinates, up: upCoordinates, down: downCoordinates, leftdown: leftDownCoordinates, leftUp: leftUpCoordinates, rightDown: rightDownCoordinates, rightUp: rightUpCoordinates}
 }
 
 ; For resolution 1366x768 - Game fullscreen
@@ -59,12 +59,10 @@ setCoordinatesForDefaultNotebookScreen(){
 ; For resolution 2560x1080 - Game fullscreen
 setCoordinatesForDeepWideScreen(){
 	addAroundCoordinates("FourSquaresBeyond", {x:1140,y:515}, {x:1375,y:515}, {x:1240,y:95}, {x:1240,y:980}, {x:1140,y:980}, {x:1140,y:95}, {x:1375,y:980}, {x:1375,y:95}) ; updated
-	;addAroundCoordinates("TwoSquaresBeyond", {x:1143,y:544}, {x:1355,y:557}, {x:1239,y:95}, {x:1250,y:620}) ; updated
-	;addAroundCoordinates("ThreeSquaresBeyond", {x:1143,y:544}, {x:1355,y:557}, {x:1239,y:95}, {x:1250,y:620}) ; updated
 	addAroundCoordinates("OneSquaresBeyond", {x:1140,y:550}, {x:1350,y:550}, {x:1250,y:440}, {x:1250,y:620}, {x:1140,y:620}, {x:1140,y:440}, {x:1350,y:620}, {x:1350,y:440}) ; updated
 
 	addConfig("Skeleton", {x:1139,y:515}, {x:1373,y:515}, {x:1258,y:394}, {x:1258,y:624}, "0xF3F3F3") ; updated
-	addConfig("Vampire", {x:1159,y:522}, {x:1357,y:522}, {x:1256,y:411}, {x:1286,y:621}, "0xD1D16F") ; updated
+	addConfig("Vampire", {x:1159,y:522}, {x:1357,y:522}, {x:1256,y:411}, {x:1223,y:621}, "0xD1D16F") ; updated
 	addConfig("DrowAssassin", {x:1130,y:510}, {x:1405,y:521}, {x:1252,y:387}, {x:1250,y:696}, "0xB30E9C")
 
 	addConfig("DrowFighter", {x:1122,y:522}, {x:1402,y:523}, {x:1233,y:410}, {x:1285,y:641}, "0xA4947C") ;updated
@@ -88,8 +86,14 @@ setCoordinatesForDeepWideScreen(){
 
 	addCoordinates("AbsoluteCenter", {x:1256, y:530})
 
-	addCoordinates("GargoyleGroundColor", "0x3D3D3D")
-	addCoordinates("GargoyleWallColor", "0x4D4D4D")
+	addCoordinates("GargoyleGroundColor", {color: "0x3D3D3D"})
+	addCoordinates("GargoyleWallColor", {color: "0x4D4D4D"})
+
+	addCoordinates("ExaustedCoordinates", {x:1495,	y:742, color: "0x3D3DFF"}) 
+	addCoordinates("changeToKnightWeaponCommand" , "F1")
+	addCoordinates("changeToArcherWeaponCommand", "F2")
+	addCoordinates("changeToMageWeaponCommand",  "F3")
+	
 }
 
 ;
